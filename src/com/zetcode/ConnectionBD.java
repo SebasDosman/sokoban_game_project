@@ -12,6 +12,7 @@ public class ConnectionBD {
       ResultSet resultado = statement.executeQuery("SELECT name_player, points_player " +
           "FROM public.points " +
           "WHERE name_player='" + name_player + "';");
+          
       if (resultado.next()) {
         int sumBD = resultado.getInt("points_player");
         int sum = sumBD + points_player;

@@ -4,7 +4,6 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Wall extends Actor {
-
     private Image image;
 
     public Wall(int x, int y) {
@@ -14,7 +13,6 @@ public class Wall extends Actor {
     }
     
     private void initWall() {
-        
         ImageIcon iicon = new ImageIcon("src/resources/llaw.png");
         image = iicon.getImage();
         setImage(image);

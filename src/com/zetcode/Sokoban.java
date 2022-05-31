@@ -8,16 +8,13 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 
 public class Sokoban extends JFrame {
-
     private final int OFFSET = 30;
 
     public Sokoban() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-
         initUI();
     }
 
     private void initUI() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        
         Board board = new Board();
         add(board);
 
@@ -31,10 +28,9 @@ public class Sokoban extends JFrame {
     }
 
     public static void main(String[] args) {
-        
         EventQueue.invokeLater(() -> {
-            
             Sokoban game = null;
+            
             try {
                 game = new Sokoban();
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

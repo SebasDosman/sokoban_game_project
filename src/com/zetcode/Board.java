@@ -10,7 +10,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.BiPredicate;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -20,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Board extends JPanel {
-
     private final int OFFSET = 30;
     private final int SPACE = 20;
     private final int LEFT_COLLISION = 1;
@@ -44,17 +42,16 @@ public class Board extends JPanel {
     private boolean isCompleted = false;
 
     private String level;
+
     ConnectionBD bd = new ConnectionBD();
-    String playerName = JOptionPane.showInputDialog(null, "Digite el nombre del jugador.", "Sokoban",
-            JOptionPane.INFORMATION_MESSAGE);
+    String playerName = JOptionPane.showInputDialog(null, "Digite el nombre del jugador.", "Sokoban", JOptionPane.INFORMATION_MESSAGE);
 
     public Board() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        String fileName = JOptionPane.showInputDialog(null, "Digite el nombre del archivo.", "Sokoban",
-                JOptionPane.INFORMATION_MESSAGE);
+        String fileName = JOptionPane.showInputDialog(null, "Digite el nombre del archivo.", "Sokoban", JOptionPane.INFORMATION_MESSAGE);
+
         menuMusicTheme();
         insertBoard(fileName);
         initBoard();
-
     }
 
     public void playerPoints(int points) {
@@ -65,10 +62,12 @@ public class Board extends JPanel {
         try {
             BufferedReader br = new BufferedReader(new FileReader("src/boards/" + file + ".txt"));
             String line;
+
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
                 level += line + "\n";
             }
+
             br.close();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -82,7 +81,6 @@ public class Board extends JPanel {
 
         clip.open(audioStream);
         clip.start();
-
     }
 
     private void initBoard() {
@@ -114,11 +112,9 @@ public class Board extends JPanel {
         Area a;
 
         for (int i = 0; i < level.length(); i++) {
-
             char item = level.charAt(i);
 
             switch (item) {
-
                 case '\n':
                     y += SPACE;
 
@@ -128,49 +124,51 @@ public class Board extends JPanel {
 
                     x = OFFSET;
                     break;
-
                 case '#':
                     wall = new Wall(x, y);
                     walls.add(wall);
+
                     x += SPACE;
+
                     break;
                 case '/':
                     llaw = new Llaw(x, y);
                     sllaw.add(llaw);
-                    x += SPACE;
-                    break;
 
+                    x += SPACE;
+
+                    break;
                 case '$':
                     b = new Baggage(x, y);
                     baggs.add(b);
-                    x += SPACE;
-                    break;
 
+                    x += SPACE;
+
+                    break;
                 case '.':
                     a = new Area(x, y);
                     areas.add(a);
-                    x += SPACE;
-                    break;
 
+                    x += SPACE;
+
+                    break;
                 case '@':
                     soko = new Player(x, y);
                     x += SPACE;
-                    break;
 
+                    break;
                 case ' ':
                     x += SPACE;
-                    break;
 
+                    break;
                 default:
                     break;
             }
-
             h = y;
         }
     }
 
     private void buildWorld(Graphics g) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-
         g.setColor(new Color(250, 240, 170));
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
@@ -183,24 +181,18 @@ public class Board extends JPanel {
         world.add(soko);
 
         for (int i = 0; i < world.size(); i++) {
-
             Actor item = world.get(i);
 
             if (item instanceof Player || item instanceof Baggage) {
-
                 g.drawImage(item.getImage(), item.x() + 2, item.y() + 2, this);
             } else {
-
                 g.drawImage(item.getImage(), item.x(), item.y(), this);
             }
 
             if (isCompleted) {
-
                 g.setColor(new Color(0, 0, 0));
                 g.drawString("Completed", 25, 20);
-
             }
-
         }
     }
 
@@ -217,10 +209,8 @@ public class Board extends JPanel {
     }
 
     private class TAdapter extends KeyAdapter {
-
         @Override
         public void keyPressed(KeyEvent e) {
-
             if (isCompleted) {
                 return;
             }
@@ -228,16 +218,12 @@ public class Board extends JPanel {
             int key = e.getKeyCode();
 
             switch (key) {
-
                 case KeyEvent.VK_LEFT:
-
-                    if (checkWallCollision(soko,
-                            LEFT_COLLISION)) {
+                    if (checkWallCollision(soko, LEFT_COLLISION)) {
                         return;
                     }
 
-                    if (checkLlawCollision(soko,
-                            LEFT_COLLISION)) {
+                    if (checkLlawCollision(soko, LEFT_COLLISION)) {
                         return;
                     }
 
@@ -253,9 +239,7 @@ public class Board extends JPanel {
                     soko.move(-SPACE, 0);
 
                     break;
-
                 case KeyEvent.VK_RIGHT:
-
                     if (checkWallCollision(soko, RIGHT_COLLISION)) {
                         return;
                     }
@@ -276,9 +260,7 @@ public class Board extends JPanel {
                     soko.move(SPACE, 0);
 
                     break;
-
                 case KeyEvent.VK_UP:
-
                     if (checkWallCollision(soko, TOP_COLLISION)) {
                         return;
                     }
@@ -299,9 +281,7 @@ public class Board extends JPanel {
                     soko.move(0, -SPACE);
 
                     break;
-
                 case KeyEvent.VK_DOWN:
-
                     if (checkWallCollision(soko, BOTTOM_COLLISION)) {
                         return;
                     }
@@ -322,13 +302,10 @@ public class Board extends JPanel {
                     soko.move(0, SPACE);
 
                     break;
-
                 case KeyEvent.VK_R:
-
                     restartLevel();
 
                     break;
-
                 case KeyEvent.VK_P:
 
                     VAR_FALSE = true;
@@ -341,35 +318,26 @@ public class Board extends JPanel {
                     VAR_TRUE = true;
 
                     break;
-
                 default:
                     break;
             }
-
             repaint();
         }
     }
 
     private boolean checkWallCollision(Actor actor, int type) {
-
         switch (type) {
-
             case LEFT_COLLISION:
-
                 for (int i = 0; i < walls.size(); i++) {
-
                     Wall wall = walls.get(i);
 
                     if (actor.isLeftCollision(wall)) {
-
                         return VAR_TRUE;
                     }
                 }
 
                 return VAR_FALSE;
-
             case RIGHT_COLLISION:
-
                 for (int i = 0; i < walls.size(); i++) {
 
                     Wall wall = walls.get(i);
@@ -380,11 +348,8 @@ public class Board extends JPanel {
                 }
 
                 return VAR_FALSE;
-
             case TOP_COLLISION:
-
                 for (int i = 0; i < walls.size(); i++) {
-
                     Wall wall = walls.get(i);
 
                     if (actor.isTopCollision(wall)) {
@@ -394,11 +359,8 @@ public class Board extends JPanel {
                 }
 
                 return VAR_FALSE;
-
             case BOTTOM_COLLISION:
-
                 for (int i = 0; i < walls.size(); i++) {
-
                     Wall wall = walls.get(i);
 
                     if (actor.isBottomCollision(wall)) {
@@ -408,7 +370,6 @@ public class Board extends JPanel {
                 }
 
                 return VAR_FALSE;
-
             default:
                 break;
         }
@@ -417,13 +378,9 @@ public class Board extends JPanel {
     }
 
     private boolean checkLlawCollision(Actor actor, int type) {
-
         switch (type) {
-
             case LEFT_COLLISION:
-
                 for (int i = 0; i < sllaw.size(); i++) {
-
                     Llaw llaw = sllaw.get(i);
 
                     if (actor.isLeftCollision(llaw)) {
@@ -433,9 +390,7 @@ public class Board extends JPanel {
                 }
 
                 return false;
-
             case RIGHT_COLLISION:
-
                 for (int i = 0; i < sllaw.size(); i++) {
 
                     Llaw llaw = sllaw.get(i);
@@ -446,9 +401,7 @@ public class Board extends JPanel {
                 }
 
                 return false;
-
             case TOP_COLLISION:
-
                 for (int i = 0; i < sllaw.size(); i++) {
 
                     Llaw llaw = sllaw.get(i);
@@ -460,11 +413,8 @@ public class Board extends JPanel {
                 }
 
                 return false;
-
             case BOTTOM_COLLISION:
-
                 for (int i = 0; i < sllaw.size(); i++) {
-
                     Llaw llaw = sllaw.get(i);
 
                     if (actor.isBottomCollision(llaw)) {
@@ -474,7 +424,6 @@ public class Board extends JPanel {
                 }
 
                 return false;
-
             default:
                 break;
         }
@@ -482,25 +431,17 @@ public class Board extends JPanel {
         return false;
     }
 
-    private boolean checkBagCollision(int type)
-            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-
+    private boolean checkBagCollision(int type) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         switch (type) {
-
             case LEFT_COLLISION:
-
                 for (int i = 0; i < baggs.size(); i++) {
-
                     Baggage bag = baggs.get(i);
 
                     if (soko.isLeftCollision(bag)) {
-
                         for (int j = 0; j < baggs.size(); j++) {
-
                             Baggage item = baggs.get(j);
 
                             if (!bag.equals(item)) {
-
                                 if (bag.isLeftCollision(item)) {
                                     return true;
                                 }
@@ -517,21 +458,16 @@ public class Board extends JPanel {
                 }
 
                 return false;
-
             case RIGHT_COLLISION:
-
                 for (int i = 0; i < baggs.size(); i++) {
-
                     Baggage bag = baggs.get(i);
 
                     if (soko.isRightCollision(bag)) {
-
                         for (int j = 0; j < baggs.size(); j++) {
 
                             Baggage item = baggs.get(j);
 
                             if (!bag.equals(item)) {
-
                                 if (bag.isRightCollision(item)) {
                                     return true;
                                 }
@@ -547,21 +483,15 @@ public class Board extends JPanel {
                     }
                 }
                 return false;
-
             case TOP_COLLISION:
-
                 for (int i = 0; i < baggs.size(); i++) {
-
                     Baggage bag = baggs.get(i);
 
                     if (soko.isTopCollision(bag)) {
-
                         for (int j = 0; j < baggs.size(); j++) {
-
                             Baggage item = baggs.get(j);
 
                             if (!bag.equals(item)) {
-
                                 if (bag.isTopCollision(item)) {
                                     return true;
                                 }
@@ -578,17 +508,12 @@ public class Board extends JPanel {
                 }
 
                 return false;
-
             case BOTTOM_COLLISION:
-
                 for (int i = 0; i < baggs.size(); i++) {
-
                     Baggage bag = baggs.get(i);
 
                     if (soko.isBottomCollision(bag)) {
-
                         for (int j = 0; j < baggs.size(); j++) {
-
                             Baggage item = baggs.get(j);
 
                             if (!bag.equals(item)) {
@@ -610,7 +535,6 @@ public class Board extends JPanel {
                 }
 
                 break;
-
             default:
                 break;
         }
@@ -619,20 +543,16 @@ public class Board extends JPanel {
     }
 
     public void isCompleted() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-
         int nOfBags = baggs.size();
         int finishedBags = 0;
 
         for (int i = 0; i < nOfBags; i++) {
-
             Baggage bag = baggs.get(i);
 
             for (int j = 0; j < nOfBags; j++) {
-
                 Area area = areas.get(j);
 
                 if (bag.x() == area.x() && bag.y() == area.y()) {
-
                     finishedBags += 1;
                 }
             }
@@ -649,7 +569,6 @@ public class Board extends JPanel {
     }
 
     private void restartLevel() {
-
         areas.clear();
         baggs.clear();
         walls.clear();
