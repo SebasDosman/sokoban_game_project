@@ -1,5 +1,7 @@
 # Java Sokoban Game
 This GitHub repository houses a Java-based Sokoban game created using Java Swing. It offers a classic Sokoban experience with a twist, featuring various modifications from the original gameplay.
+
+## Interface
 ![Sokoban game screenshot](sokoban_game.png)
 
 ## Features
